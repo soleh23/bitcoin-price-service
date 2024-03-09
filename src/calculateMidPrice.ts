@@ -1,8 +1,11 @@
 export function calculateMidPrice(
-  askPrice: number,
-  bidPrice: number,
+  askPrice: number | null,
+  bidPrice: number | null,
   commissionFeePercent: number
 ): number {
+  if (!askPrice || !bidPrice) {
+    return null;
+  }
   const askPriceAfterCommission =
     askPrice + (askPrice * commissionFeePercent) / 100;
   const bidPriceAfterCommission =

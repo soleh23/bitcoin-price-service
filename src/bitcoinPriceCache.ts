@@ -1,6 +1,6 @@
 type BitcoinPrice = {
-  askPrice: number;
-  bidPrice: number;
+  askPrice: number | null;
+  bidPrice: number | null;
 };
 
 export class BitcoinPriceCache {
@@ -15,7 +15,7 @@ export class BitcoinPriceCache {
     return BitcoinPriceCache.instance;
   }
 
-  public get(): BitcoinPrice | null {
+  public get(): BitcoinPrice {
     return { askPrice: this.askPrice, bidPrice: this.bidPrice };
   }
 

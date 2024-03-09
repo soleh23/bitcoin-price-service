@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "es2022",
     "target": "es6",
     "esModuleInterop": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "moduleResolution": "bundler"
   },
   "include": ["src"]
 }

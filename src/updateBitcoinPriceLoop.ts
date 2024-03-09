@@ -1,28 +1,7 @@
-import { BitcoinPriceCache } from "./bitcoinPriceCache";
+import { BitcoinPriceCache } from "./bitcoinPriceCache.js";
+import { fetchBitcoinPrice } from "./fetchBitcoinPrice.js";
 
-type BitcoinPriceResponse = {
-  symbol: string;
-  bidPrice: string;
-  bidQty: string;
-  askPrice: string;
-  askQty: string;
-};
-
-async function fetchBitcoinPrice(): Promise<BitcoinPriceResponse | null> {
-  const bitcoinPricePending = await fetch(
-    "https://api.binance.com/api/v3/ticker/bookTicker?symbol=BTCUSDT"
-  );
-  if (!bitcoinPricePending.ok) {
-    console.error(
-      `Failed to fetch Bitcoin price. Status: ${bitcoinPricePending.status}, error: ${bitcoinPricePending.statusText}`
-    );
-    return null;
-  }
-  const bitcoinPrice: BitcoinPriceResponse = await bitcoinPricePending.json();
-  return bitcoinPrice;
-}
-
-async function updateBitcoinPrice(): Promise<void> {
+export async function updateBitcoinPrice(): Promise<void> {
   const newBitcoinPrice = await fetchBitcoinPrice();
   if (newBitcoinPrice === null) {
     console.error("Failed to update Bitcoin price");

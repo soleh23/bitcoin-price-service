@@ -1,10 +1,6 @@
 import express, { Request, Response } from "express";
-import dotenv from "dotenv";
-import { BitcoinPriceCache } from "./bitcoinPriceCache";
-import { runUpdateBitcoinPriceLoop } from "./updateBitcoinPriceLoop";
-import { calculateMidPrice } from "./calculateMidPrice";
-
-dotenv.config();
+import { runUpdateBitcoinPriceLoop } from "./updateBitcoinPriceLoop.js";
+import { getMidPrice } from "./getMidPrice.js";
 
 const PORT = parseInt(process.env.PORT);
 const UPDATE_INTERVAL_SECONDS = parseInt(process.env.UPDATE_INTERVAL_SECONDS);
@@ -15,14 +11,8 @@ const SERVICE_COMMISSION_PERCENT = parseInt(
 runUpdateBitcoinPriceLoop(UPDATE_INTERVAL_SECONDS);
 const app = express();
 
-app.get("/price", (_: Request, res: Response) => {
-  const bitcoinPriceCache = BitcoinPriceCache.getInstance();
-  const { askPrice, bidPrice } = bitcoinPriceCache.get();
-  const midPrice = calculateMidPrice(
-    askPrice,
-    bidPrice,
-    SERVICE_COMMISSION_PERCENT
-  );
+app.get("/mid-price", (_: Request, res: Response) => {
+  const midPrice = getMidPrice(SERVICE_COMMISSION_PERCENT);
   if (midPrice === null) {
     res
       .status(500)
